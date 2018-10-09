@@ -127,7 +127,220 @@ si sono usati:
     
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
+#### 2. SVM
+Si usa l'implementazione standard della Support Vector Classification contenuta nella libreria `sklearn.svm`. Questo classificatore è detto anche classificatore a massimo margine perchè allo stesso tempo minimizza l'errore empirico di classificazione e massimizza il margine geometrico. Nello specifico, cerca gli iperpiani di separazioni ottimali tramite una funzione obiettivo senza minimi locali.
 
+Tra i vantaggi nell'uso del SVC possiamo trovare il fatto che:
+- sia efficiente dal punto di vista della memoria in quanto usa un subset di punti di training nella funzione di decisione (chiamati support vectors) 
+- sia versatile poichè per come funzioni di decisione si possono specificare diverse funzioni Kernel. Queste permettono di proiettare il problema iniziale su uno spazio di dimensioni superiore senza grandi costi computazionali e ottenendo separazioni basate anche su superfici non lineari.
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl=svm.SVC(kernel='linear')    
+```
+si sono usati:
+- come funzione kernel, una funzione lineare del tipo:
+<a href="https://www.codecogs.com/eqnedit.php?latex=\langle&space;x,&space;x'\rangle" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\langle&space;x,&space;x'\rangle" title="\langle x, x'\rangle" /></a>
+- altri parametri di default, tra cui:
+   - *C=1.0* come parametro di penalità per il termine di errore
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 3. DTC
+Si usa l'implementazione standard del Decision Tree Classifier contenuto nella libreria `sklearn.tree`. Questo classificatore è usato per valutare i parametri di un modello al fine di predire il valore di un target variabile, apprendendo semplici regole di decisione dedotte dalle features.
+
+Tra i vantaggi di questo classificatore è possible trovare il fatto che:
+- sia semplice da capire ed interpretare in quanto si basa su un modello white box in cui l'interpretazione di una condizione è facilmente spiegata dalla logica booleana
+- gli alberi (*trees*) possano essere visualizzati
+- il costo di predire i dati usando l'albero sia logaritmico nel numero di punti di dati usati per allenare l'albero stesso.
+
+
+Nello specifico, per quanto riguarda il classificatore implementato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl = tree.DecisionTreeClassifier()      
+```
+si sono usati i parametri di default, tra cui:
+- *criterion='gini'* come funzione per misurare la qualità dello split; 
+- *splitter='best'* come strategia usata per scegliere lo split ad ogni nodo in modo da scegliere quello migliore;
+- *max_features=None* come numero di features da considerare quando si guarda allo split migliore. In questo caso max_features=n_features;
+- *max_depth=None* come massima profondità dell'albero None. Questo significa che i nodi vengono estesi fin quando tutte le foglie sono pure.
+
+Inoltre, l'equazione di diminuzione di impurità pesata (che governa lo split) è:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{N_t}{N}&space;\cdot&space;\left(\text{impurity}&space;-&space;\frac{N_{t_R}}{N_t}&space;\cdot&space;\text{(right-impurity)}&space;-&space;\frac{N_{t_L}}{N_t}&space;\cdot&space;\text{(left-impurity)}&space;\right)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{N_t}{N}&space;\cdot&space;\left(\text{impurity}&space;-&space;\frac{N_{t_R}}{N_t}&space;\cdot&space;\text{(right-impurity)}&space;-&space;\frac{N_{t_L}}{N_t}&space;\cdot&space;\text{(left-impurity)}&space;\right)" title="\frac{N_t}{N} \cdot \left(\text{impurity} - \frac{N_{t_R}}{N_t} \cdot \text{(right-impurity)} - \frac{N_{t_L}}{N_t} \cdot \text{(left-impurity)} \right)" /></a>
+
+dove:
+- *N* è il numero totale di campioni
+- *N_t* è il numero di campioni al nodo corrente
+- *N_{t_L}* è il numero di campioni nella parte destra
+- *N_{t_R}* è il numero di campioni nella parte sinistra
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 4. KNC
+Si usa l'implementazione standard del K Neighbors Classifier contenuto nella libreria `sklearn.neighbors`. Questo classificatore non cerca di costruire un modello interno generale, ma semplicemente memorizza le istanze dei dati di training; quindi la classificazione è calcolata da un semplice voto di maggioranza dei vicini più vicini ad ogni punto: il punto di ricerca è assegnato alla classe che ha il maggior numero di rappresentanti nei vicini più vicini del punto.
+
+Questo classificatore, quindi, si basa su k vicini, dove k è un valore intero specificato dall'utente e la sua scelta ottimale dipende fortemente dai dati. Ad esempio, in generale, una k più grande sopprime gli effetti del rumore ma rende i confini di classificazione meno distinti.
+
+Nello specifico, per quanto riguarda il classificatore implementato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl = neighbors.KNeighborsClassifier(n_neighbors=3)       
+```
+si sono usati:
+- *n_neighbors=3* come numero di vicini;
+- altri parametri di default tra cui:
+    - *weights='uniform'* come funzione per i pesi usata per la previsione. I pesi uniformi portano a pesare equamente tutti i punti in ogni vicinato
+    - *algorithm='auto'* come algoritmo usato per calcolare i vicini. Questo è l'algoritmo più appropriato sulla base dei valori passati dal metodo di fit.
+    - *metric='minkowski'* come metrica ovvero distanza usata per l'albero.
+    
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 5. RFC 
+Si usa l'implementazione standard del Random Forest Classifier contenuto nella libreria `sklearn.ensemble`. Questo classificare fa il fit di un numero di classificatori decision trees su vari sotto-campioni del dataset e usa la media per migliorare l'accuratezza predittiva e controllare l'over-fitting. La grandezza dei sotto campioni è uguale a quella del campione di input iniziale ma i campioni sono disegnati con rimpiazzamento dal set di training. 
+Inoltre, quando si fa la divisione di un nodo durante la costruzione dell'albero, lo split che viene scelto non è il migliore tra tutte le features ma tra un subset random di features. A causa di questa randomicità, il bias della foresta dovrebbe aumentare (rispetto a quello di un singolo albero non-random) ma, grazie alla media, la sua varianza diminuisce e compensa di più l'aumento del bias determinando un modello migliore.
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl=ensemble.RandomForestClassifier(max_depth=15, n_estimators=10, max_features=1)      
+```
+si sono usati:
+- *max_depth=15* come massima espansione dell'albero;
+- *n_estimators=10* come numero di alberi (estimatori) nella foresta;
+- *max_features=1* come numero di features da considerare quando si guarda al migliore split;
+- altri parametri di default, tra cui:
+    - *criterion='gini'* come funzione per misurare la qualità dello split;
+    - $*min_samples_split=2* come numero minimo di campioni richiesto per dividere un nodo interno.
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 6. MLP
+Si usa l'implementazione standard del Multi Layer Perceptron contenuto nella libreria `sklearn.neural_network`. Questo classificatore si basa su una rete neurale e su un allenamento iterativo. Infatti, ad ogni step temporale vengono calcolate le derivate parziali della funzione di perdita rispetto ai parametri del modello per aggiornare i parametri stessi.
+Può avere anche un termine di regolarizzazione aggiunto alla funzione di perdita che restringe i parametri del modello per prevenire l'overfitting.
+
+Nello specifico, per quanto riguarda il classificatore utilizzato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl = neural_network.MLPClassifier(activation='logistic', solver='lbfgs', max_iter=1000 )       
+```
+si sono usati:
+- *activation='logistic'* come funzione di attivazione per gli strati nascosti. Questa è una funzione logistica sigmoidale che restituisce:
+<a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;\frac{1}{1&plus;exp(-x)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f(x)&space;=&space;\frac{1}{1&plus;exp(-x)}" title="f(x) = \frac{1}{1+exp(-x)}" /></a>
+   
+- *solver='lbfgs'* come risolutore per l'ottimizzazione dei pesi. Questo è un ottimizzatore facente parte dei metodi quasi-newtoniani ed è stato scelto in quanto per piccoli datasets, come il wdbc, converge più velocemente e ha migliori performance;
+- *max_iter=1000* come massimo numero di iterazioni per la convergenza;
+- altri parametri di default, tra cui:
+    - *hidden_layer_sizes=(100,)}* come dimensioni degli strati nascosti;
+    - *alpha=0.0001* come parametro di penalizzazione L2;
+    - *batch_size=min(200,n_samples)}* come grandezza di batch;
+    - *learning_rate=costant=0.001* come frequenza di apprendimento per l'aggiornamento dei pesi.
+ 
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 7. ABC
+Si usa l'implementazione standard dell'Ada Boost Classifier contenuto nella libreria `sklearn.ensemble`. Questo classificatore inizialmente fa il fit di un modello debole (leggermente migliori di quelli random) sul dataset e poi fitta copie aggiuntive dello stesso modello sullo stesso dataset ma aggiustando i pesi di istanze di training classificate non correttamente in modo che i classificatori seguenti si focalizzino di più su casi difficili. 
+
+Iniziamente, questi pesi sono tutti settati a 1/N, così che il primo step alleni semplicemente un debole modello dei dati originali; tuttavia, per ogni iterazione successiva, sono modificati individualmente in modo che:
+- i pesi associati agli esempi di training che non sono predetti correttamente vengano aumentati;
+- i pesi associati agli esempi di training che sono predetti correttamente vengano diminuiti.
+
+Successivamente l'algoritmo di apprendimento viene riapplicato per ripesare i dati. In questo modo ogni volta che le iterazioni procedono, gli esempi difficili da predire ricevono un'influenza sempre crescente e ogni modello debole viene forzato a concentrarsi sugli esempi che mancano dai precedenti nella sequenza.
+Infine, le previsioni da ciascuno di loro vengono combinate attraverso un voto di maggioranza pesata per produrre la previsione finale. 
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl=ensemble.AdaBoostClassifier()       
+```
+si sono usati i parametri di default, tra cui:
+- *base_estimator=None=DecisionTreeClassifier(max_depth=1)}* come estimatore base da cui è costruito l'ensemble potenziato;
+- *n_estimators=50* come numero di estimatori a cui viene concluso il potenziamento;
+- *learning_rate=1* come frequenza di apprendimento;
+- *algorithm='SAMME.R'* come algoritmo di potenziamento. Questo converge velocemente, raggiungendo un errore minore di testing con minori iterazioni di boosting.
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 8. GNB
+Si usa l'implementazione standard del Gaussian Naive Bayes contenuto nella libreria `sklearn.naive_bayes`. Questo classificatore si basa sull'applicazione del teorema di Bayes, con l'assunzione di una forte (naive) indipendenza condizionata tra ogni coppia di features, dato il valore della variabile di classe.
+Il teorema di Bayes stabilisce che, data la variabile di classe $y$ e il vettore di feature dipendente $x_1$ attraverso $x_n$, si ha:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=P(y&space;\mid&space;x_1,&space;\dots,&space;x_n)&space;=&space;\frac{P(y)&space;P(x_1,&space;\dots&space;x_n&space;\mid&space;y)}&space;{P(x_1,&space;\dots,&space;x_n)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(y&space;\mid&space;x_1,&space;\dots,&space;x_n)&space;=&space;\frac{P(y)&space;P(x_1,&space;\dots&space;x_n&space;\mid&space;y)}&space;{P(x_1,&space;\dots,&space;x_n)}" title="P(y \mid x_1, \dots, x_n) = \frac{P(y) P(x_1, \dots x_n \mid y)} {P(x_1, \dots, x_n)}" /></a>
+
+L'assunzione di indipendenza naive condizionale, invece, stabilisce che:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=P(x_i&space;|&space;y,&space;x_1,&space;\dots,&space;x_{i-1},&space;x_{i&plus;1},&space;\dots,&space;x_n)&space;=&space;P(x_i&space;|&space;y)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(x_i&space;|&space;y,&space;x_1,&space;\dots,&space;x_{i-1},&space;x_{i&plus;1},&space;\dots,&space;x_n)&space;=&space;P(x_i&space;|&space;y)" title="P(x_i | y, x_1, \dots, x_{i-1}, x_{i+1}, \dots, x_n) = P(x_i | y)" /></a>
+
+Questo classificatore implementa l'algoritmo Gaussian Naive Bayes per la classificazione in cui si assume che la likelihood delle features sia gaussiana:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=P(x_i&space;\mid&space;y)&space;=&space;\frac{1}{\sqrt{2\pi\sigma^2_y}}&space;\exp\left(-\frac{(x_i&space;-&space;\mu_y)^2}{2\sigma^2_y}\right)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(x_i&space;\mid&space;y)&space;=&space;\frac{1}{\sqrt{2\pi\sigma^2_y}}&space;\exp\left(-\frac{(x_i&space;-&space;\mu_y)^2}{2\sigma^2_y}\right)" title="P(x_i \mid y) = \frac{1}{\sqrt{2\pi\sigma^2_y}} \exp\left(-\frac{(x_i - \mu_y)^2}{2\sigma^2_y}\right)" /></a>
+
+dove i parametri <a href="https://www.codecogs.com/eqnedit.php?latex=\sigma_y" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\sigma_y" title="\sigma_y" /></a> e <a href="https://www.codecogs.com/eqnedit.php?latex=\mu_y" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\mu_y" title="\mu_y" /></a> sono stimati usando il massimo della likelihood.
+
+Tra i vantaggi di questo classificatore troviamo il fatto che:
+- richieda una piccola quantità di dati di training per stimare i parametri necessari;
+- possa essere estremamente veloce se confrontato con metodi più sofisticati;
+- il disaccoppiamento delle distribuzioni di features condizionali delle classi possa essere stimato indipendentemente come una distribuzione unidimensionale e questo aiuta ad ridurre i problemi che derivano dalla 'maledizione' della dimensionalità.
+
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl=naive_bayes.GaussianNB()    
+```
+in cui si sono utilizzati i parametri di default, ovvero:
+- *priors=(n_classes,)}* come probabilità a priori delle classi;
+- *var_smoothing=1e-9* come porzione della varianza più grande tra tutte le features. Questa viene aggiunta alle varianze per il calcolo della stabilità.
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 9. QDA
+Si usa l'implementazione standard della Quadratic Discriminant Analysis contenuta nella libreria `sklearn.discriminant_analysis`. Questo classificatore può essere ottenuto da semplici modelli probabilistici che modellano la distribuzione condizionale di classe dei dati $P(X|y=k)$ per ogni classe $k$. 
+Le previsioni possono essere ottenute usando la regola di Bayes:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=P(y=k&space;|&space;X)&space;=&space;\frac{P(X&space;|&space;y=k)&space;P(y=k)}{P(X)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(y=k&space;|&space;X)&space;=&space;\frac{P(X&space;|&space;y=k)&space;P(y=k)}{P(X)}" title="P(y=k | X) = \frac{P(X | y=k) P(y=k)}{P(X)}" /></a>
+
+Nello specifico, $P(X|y)$ è modellizzato come una distribuzione Gaussiana multivariata con densità:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=P(X&space;|&space;y=k)&space;=&space;\frac{1}{(2\pi)^{d/2}&space;|\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2}&space;(X-\mu_k)^t&space;\Sigma_k^{-1}&space;(X-\mu_k)\right)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?P(X&space;|&space;y=k)&space;=&space;\frac{1}{(2\pi)^{d/2}&space;|\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2}&space;(X-\mu_k)^t&space;\Sigma_k^{-1}&space;(X-\mu_k)\right)" title="P(X | y=k) = \frac{1}{(2\pi)^{d/2} |\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2} (X-\mu_k)^t \Sigma_k^{-1} (X-\mu_k)\right)" /></a>
+
+dove *d* è il numero di features.
+
+In poche parole, questo è un classificatore con un limite di decisione (superficie di separazione) quadratico che è generato fittando le densità condizionali delle classi e usando la regola di Bayes. Il modello fitta una densità Gaussiana ad ogni classe.
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl=discriminant_analysis.QuadraticDiscriminantAnalysis()      
+```
+sono stati usati come parametri quelli di default, tra cui:
+- *priors=n_classes* come priori sulle classi;
+- *tol=1.0e-4* come soglia usata per la stima del rango.
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
+
+#### 10. SGD
+Si usa l'implementazione standard della Stochastic Gradient Descent contenuta nella libreria `sklearn.linear_model`. Questo è un classificatore lineare con apprendimento tramite il gradiente di discesa stocastica (SGD); nello specifico, questo implica che per ogni campione:
+- viene stimato il gradiente di perdita;
+- viene aggiornato il modello man mano con una frequenza di apprendimento decrescente.
+
+Il regolarizzatore è un termine di penalità che viene aggiunto alla funzione di perdita e che restringe i parametri del modello.
+
+Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
+```python
+#da Classification.py
+cl = linear_model.SGDClassifier(loss="perceptron", penalty="elasticnet", max_iter=600)   
+```
+si sono usati:
+- *loss='perceptron'* come funzione di perdita, ovvero come perdita lineare usata dall'algoritmo del percettrone;
+- *penalty='elasticnet'* come penalità (termine di regolarizzazione). Questo è un termine che viene aggiunto alla funzione di perdita, restringe i parametri del modello e, in questo caso, è una combinazione di L2 (norma euclidea quadrata) e L1 (norma assoluta);
+- *max_iter=600* come massimo numero di passi sui dati di training;
+- altri parametri di default, tra cui:
+    - *tol=1e-3* come criterio di stop.
+
+In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 
 
