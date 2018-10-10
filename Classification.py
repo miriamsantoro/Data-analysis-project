@@ -346,8 +346,6 @@ def SVM10():
         print("Accuracy: %0.2f" % (scores))
         
         myList.append(scores)
-    
-    
         
     return myList
 

@@ -150,7 +150,7 @@ def SVCPlot(s,e):
             
             plt.show()
         else:
-            print("I can't")
+            print("I can't do a plot (Memory problem)")
     
     else:
         print("I can't do a plot because I need ONLY 2 features! ")
@@ -191,9 +191,6 @@ def Plot3B():
     f24=np.array(data[24])
     f22=np.array(data[22])
     classification=np.array(data[1])
-    
-    #a1=np.column_stack((classification,radius))
-    #a2=np.column_stack((classification,texture))
     
     malignant = np.where(classification == "M" )
     benign = np.where(classification=="B")
