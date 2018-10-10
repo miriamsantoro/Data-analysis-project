@@ -17,12 +17,12 @@ Il progetto ha previsto anche l'implementazioni di altre librerie, oltre quelle 
 
 ## Esecuzione del progetto
 I classificatori sono stati implementati in due script diversi a seconda della libreria utilizzata. Nello specifico:
-1. `Classification.py` contiene i classificatori definiti usando `sklearn`; nello specifico:
+1. `Classification.py` contiene i classificatori definiti usando `sklearn`; ovvero:
     1. 10 classificatori implementati con possibilità di scegliere le features;
     2. Gli stessi 10 classificatori implementati tenendo conto delle 10 features migliori.
-2. `NNC.py` contiene il classificatore definito usando Pytorch; nello specifico:
-    1. Il classificatore implementato con possibilità di scegliere le features
-    2. Lo stesso classificatore implementato tenendo conto delle 10 features migliori 
+2. `NNC.py` contiene il classificatore definito usando Pytorch; ovvero:
+    1. Il classificatore implementato con possibilità di scegliere le features;
+    2. Lo stesso classificatore implementato tenendo conto delle 10 features migliori.
    
 Questi due file Python sono stati implementati in `main.py`, script che è necessario eseguire per ottenere i risultati.
 Inoltre, in `main.py` è stato importato anche lo script `Plotting.py`, utile per visualizzare i vari plot che verranno descritti nell'apposita sezione **Plotting**.
@@ -46,7 +46,7 @@ Le features sono state calcolate da un'immagine digitalizzata di un fine aspirat
 Inoltre, è necessario aggiungere che le 569 istanze possono essere divise in due classi, la prima avente 357 tumori benigni e la seconda avente 212 tumori maligni.
 
 
-Una volta estratti i dati tramite la libreria `pandas` e aver disposto features e labels in array si è utilizzata la funzione `model_selection.train_test_split` contenuta in `sklearn` per splittare in maniera diversa il dataset in training set e test set. Questi ultimi sono stati divisi come segue:
+Una volta estratti i dati tramite la libreria `pandas` e aver disposto features e labels in array, si è utilizzata la funzione `model_selection.train_test_split` contenuta in `sklearn` per splittare in maniera diversa il dataset in training set e test set. Questi ultimi sono stati divisi come segue:
 1. 90% training, 10% test
 2. 80% training, 20% test
 3. 50% training, 50% test 
@@ -93,31 +93,31 @@ n1 = Classification.LogReg(2,16)
 o1 = Classification.LogReg(2,30)
 ```
 
-Inoltre, dopo che, tramite la funzione `stats.spearmanr`, implementata all'interno di `Histo` in `Plotting.py`, sono state individuate le 10 features più correlate alle labels, sono stati realizzati classificatori uguali a quelli precedenti ma in modo che prendessero come input queste 10 specifiche features. 
-Per fare ciò, si è aggiunto un 10 al nome delle funzioni precedenti usate per i classificatori e non sono stati forniti parametri di input nell'argomento della funzione.
-La chiamata a uno di questi classificatori è mostrata nella seguente riga di codice, tratta dal main:
+Inoltre, dopo che, tramite la funzione `stats.spearmanr`, implementata all'interno di `Histo` in `Plotting.py`, si sono individuate le 10 features più correlate alle labels, sono stati realizzati classificatori uguali a quelli precedenti ma in modo che prendessero come input queste 10 specifiche features. 
+La chiamata a uno di questi classificatori è mostrata nella seguente riga di codice:
 ```python
+#da main.py
 p1 = Classification.LogReg10()
 ```
 
 #### 1. LogReg
-Si usa l'implementazione standard del classificatore Logistic Regression contenuto nella libreria `sklearn.linear_model`. Questo è usato per valutare i parametri di un modello statistico al fine di modellare una variabile dipendente binaria, ovvero una variabile con due possibili valori (nel nostro caso etichettati con "B"=0 e "M"=1).
+Si usa l'implementazione standard del classificatore Logistic Regression contenuto nella libreria `sklearn.linear_model`. Questo è usato per valutare i parametri di un modello lineare generalizzato e viene applicato nei casi in cui si abbia una variabile dipendente binaria, ovvero una variabile con due possibili valori (nel nostro caso etichettati con "B"=0 e "M"=1).
 La funzione utilizzata in questo modello è chiamata logistica ed è una funzione del tipo:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)={\frac&space;{L}{1&plus;e^{-k(x-x_{0})}}}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f(x)={\frac&space;{L}{1&plus;e^{-k(x-x_{0})}}}" title="f(x)={\frac {L}{1+e^{-k(x-x_{0})}}}" /></a>
 
 dove:
-- e = numero di Eulero,
-- x0 = valore sull'asse delle x del punto a metà della funzione sigmoide,
-- L =  massimo valore della curva
-- k = ripidezza della curva.
+- *e* = numero di Eulero,
+- *x0* = valore sull'asse delle x del punto a metà della funzione sigmoide,
+- *L* =  massimo valore della curva
+- *k* = ripidezza della curva.
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl = linear_model.LogisticRegression(C=2.5)
 ```
-si sono usati:
+si usano:
 - *C=2.5* come inverso della forza di regolarizzazione, indicante la tolleranza di casi mal classificati, in quanto questo valore è poco al di sopra del valore di default 1 ed è utile per evitare errori di overfitting;
 - altri parametri lasciati di default tra cui:
     - *solver='liblinear'* come risolutore, in quanto per piccoli dataset è una buona scelta
@@ -126,18 +126,18 @@ si sono usati:
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 2. SVM
-Si usa l'implementazione standard della Support Vector Classification contenuta nella libreria `sklearn.svm`. Questo classificatore è detto anche classificatore a massimo margine perchè allo stesso tempo minimizza l'errore empirico di classificazione e massimizza il margine geometrico. Nello specifico, cerca gli iperpiani di separazioni ottimali tramite una funzione obiettivo senza minimi locali.
+Si usa l'implementazione standard della Support Vector Classification contenuta nella libreria `sklearn.svm`. Questo classificatore è detto anche classificatore a massimo margine perchè, allo stesso tempo, minimizza l'errore empirico di classificazione e massimizza il margine geometrico. Nello specifico, cerca gli iperpiani di separazioni ottimali tramite una funzione obiettivo senza minimi locali.
 
-Tra i vantaggi nell'uso del SVC possiamo trovare il fatto che:
-- sia efficiente dal punto di vista della memoria in quanto usa un subset di punti di training nella funzione di decisione (chiamati support vectors) 
-- sia versatile poichè per come funzioni di decisione si possono specificare diverse funzioni Kernel. Queste permettono di proiettare il problema iniziale su uno spazio di dimensioni superiore senza grandi costi computazionali e ottenendo separazioni basate anche su superfici non lineari.
+Tra i vantaggi nell'uso del SVC si può trovare il fatto che:
+- sia efficiente dal punto di vista della memoria in quanto usa un subset di punti di training nella funzione di decisione (chiamati support vectors);
+- sia versatile poichè come funzioni di decisione è possibile specifcare diverse funzioni Kernel. Queste permettono di proiettare il problema iniziale su uno spazio di dimensioni superiore senza grandi costi computazionali e ottenendo separazioni basate anche su superfici non lineari.
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl=svm.SVC(kernel='linear')    
 ```
-si sono usati:
+si usano:
 - come funzione kernel, una funzione lineare del tipo:
 <a href="https://www.codecogs.com/eqnedit.php?latex=\langle&space;x,&space;x'\rangle" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\langle&space;x,&space;x'\rangle" title="\langle x, x'\rangle" /></a>
 - altri parametri di default, tra cui:
@@ -146,12 +146,15 @@ si sono usati:
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 3. DTC
-Si usa l'implementazione standard del Decision Tree Classifier contenuto nella libreria `sklearn.tree`. Questo classificatore è usato per valutare i parametri di un modello al fine di predire il valore di un target variabile, apprendendo semplici regole di decisione dedotte dalle features.
+Si usa l'implementazione standard del Decision Tree Classifier contenuto nella libreria `sklearn.tree`. Questo classificatore è usato per valutare i parametri di un modello al fine di predire il valore di un target variabile, apprendendo semplici regole di decisione dedotte dalle features. 
+Il DTC, quindi, si basa su una struttura ad albero in cui:
+- ogni nodo interno rappresenta un test su un attibuto;
+- ogni nodo foglia rappresenta un'etichetta di classe.
 
 Tra i vantaggi di questo classificatore è possible trovare il fatto che:
-- sia semplice da capire ed interpretare in quanto si basa su un modello white box in cui l'interpretazione di una condizione è facilmente spiegata dalla logica booleana
-- gli alberi (*trees*) possano essere visualizzati
-- il costo di predire i dati usando l'albero sia logaritmico nel numero di punti di dati usati per allenare l'albero stesso.
+- sia semplice da capire ed interpretare in quanto si basa su un modello white box in cui l'interpretazione di una condizione è facilmente spiegata dalla logica booleana;
+- gli alberi (*trees*) possano essere visualizzati;
+- il costo di previsione dei dati sia logaritmico nel numero di punti di dati usati per allenare l'albero stesso.
 
 
 Nello specifico, per quanto riguarda il classificatore implementato in questo progetto e mostrato di seguito:
@@ -159,13 +162,13 @@ Nello specifico, per quanto riguarda il classificatore implementato in questo pr
 #da Classification.py
 cl = tree.DecisionTreeClassifier()      
 ```
-si sono usati i parametri di default, tra cui:
+si usano i parametri di default, tra cui:
 - *criterion='gini'* come funzione per misurare la qualità dello split; 
-- *splitter='best'* come strategia usata per scegliere lo split ad ogni nodo in modo da scegliere quello migliore;
+- *splitter='best'* come strategia usata per scegliere lo split (in questo caso, quello migliore) ad ogni nodo;
 - *max_features=None* come numero di features da considerare quando si guarda allo split migliore. In questo caso max_features=n_features;
-- *max_depth=None* come massima profondità dell'albero None. Questo significa che i nodi vengono estesi fin quando tutte le foglie sono pure.
+- *max_depth=None* come massima profondità dell'albero. Questo significa che i nodi vengono estesi fin quando tutte le foglie sono pure.
 
-Inoltre, l'equazione di diminuzione di impurità pesata (che governa lo split) è:
+Inoltre, l'equazione di diminuzione di impurità pesata (che governa lo split ed è fornita da `sklearn`) è:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\frac{N_t}{N}&space;\cdot&space;\left(\text{impurity}&space;-&space;\frac{N_{t_R}}{N_t}&space;\cdot&space;\text{(right-impurity)}&space;-&space;\frac{N_{t_L}}{N_t}&space;\cdot&space;\text{(left-impurity)}&space;\right)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{N_t}{N}&space;\cdot&space;\left(\text{impurity}&space;-&space;\frac{N_{t_R}}{N_t}&space;\cdot&space;\text{(right-impurity)}&space;-&space;\frac{N_{t_L}}{N_t}&space;\cdot&space;\text{(left-impurity)}&space;\right)" title="\frac{N_t}{N} \cdot \left(\text{impurity} - \frac{N_{t_R}}{N_t} \cdot \text{(right-impurity)} - \frac{N_{t_L}}{N_t} \cdot \text{(left-impurity)} \right)" /></a>
 
@@ -178,21 +181,21 @@ dove:
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 4. KNC
-Si usa l'implementazione standard del K Neighbors Classifier contenuto nella libreria `sklearn.neighbors`. Questo classificatore non cerca di costruire un modello interno generale, ma semplicemente memorizza le istanze dei dati di training; quindi la classificazione è calcolata da un semplice voto di maggioranza dei vicini più vicini ad ogni punto: il punto di ricerca è assegnato alla classe che ha il maggior numero di rappresentanti nei vicini più vicini del punto.
+Si usa l'implementazione standard del K-Neighbors Classifier contenuto nella libreria `sklearn.neighbors`. Questo classificatore non cerca di costruire un modello interno generale, ma semplicemente memorizza le istanze dei dati di training; quindi la classificazione è calcolata da un semplice voto di maggioranza dei vicini più vicini ad ogni punto: il punto di ricerca è assegnato alla classe più frequente tra i k esempi più vicini all'oggetto sotto esame.
 
-Questo classificatore, quindi, si basa su k vicini, dove k è un valore intero specificato dall'utente e la sua scelta ottimale dipende fortemente dai dati. Ad esempio, in generale, una k più grande sopprime gli effetti del rumore ma rende i confini di classificazione meno distinti.
+k è un parametro intero specificato dall'utente e la sua scelta ottimale dipende fortemente dai dati. Ad esempio, in generale, una k più grande sopprime gli effetti del rumore ma rende i confini di classificazione meno distinti.
 
 Nello specifico, per quanto riguarda il classificatore implementato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl = neighbors.KNeighborsClassifier(n_neighbors=3)       
 ```
-si sono usati:
-- *n_neighbors=3* come numero di vicini;
+si usano:
+- *n_neighbors=3* come numero di vicini per evitare situazioni di parità;
 - altri parametri di default tra cui:
-    - *weights='uniform'* come funzione per i pesi usata per la previsione. I pesi uniformi portano a pesare equamente tutti i punti in ogni vicinato
-    - *algorithm='auto'* come algoritmo usato per calcolare i vicini. Questo è l'algoritmo più appropriato sulla base dei valori passati dal metodo di fit.
-    - *metric='minkowski'* come metrica ovvero distanza usata per l'albero.
+    - *weights='uniform'* come funzione per i pesi usata per la previsione. I pesi uniformi portano a considerare equamente tutti i punti in ogni vicinato;
+    - *algorithm='auto'* come algoritmo usato per calcolare i vicini. Questo è l'algoritmo più appropriato sulla base dei valori passati dal metodo di fit;
+    - *metric='minkowski'* come distanza usata per l'albero.
     
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
@@ -205,7 +208,7 @@ Nello specifico, per quanto riguarda il classificatore usato in questo progetto 
 #da Classification.py
 cl=ensemble.RandomForestClassifier(max_depth=15, n_estimators=10, max_features=1)      
 ```
-si sono usati:
+si usano:
 - *max_depth=15* come massima espansione dell'albero;
 - *n_estimators=10* come numero di alberi (estimatori) nella foresta;
 - *max_features=1* come numero di features da considerare quando si guarda al migliore split;
@@ -216,7 +219,7 @@ si sono usati:
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 6. MLP
-Si usa l'implementazione standard del Multi Layer Perceptron contenuto nella libreria `sklearn.neural_network`. Questo classificatore si basa su una rete neurale e su un allenamento iterativo. Infatti, ad ogni step temporale vengono calcolate le derivate parziali della funzione di perdita rispetto ai parametri del modello per aggiornare i parametri stessi.
+Si usa l'implementazione standard del Multi Layer Perceptron contenuto nella libreria `sklearn.neural_network`. Questo classificatore si basa su una rete neurale e su un allenamento iterativo. Infatti, ad ogni step temporale vengono calcolate le derivate parziali della funzione di perdita rispetto ai parametri del modello e vengono aggiornati i parametri stessi.
 Può avere anche un termine di regolarizzazione aggiunto alla funzione di perdita che restringe i parametri del modello per prevenire l'overfitting.
 
 Nello specifico, per quanto riguarda il classificatore utilizzato in questo progetto e mostrato di seguito:
@@ -224,13 +227,13 @@ Nello specifico, per quanto riguarda il classificatore utilizzato in questo prog
 #da Classification.py
 cl = neural_network.MLPClassifier(activation='logistic', solver='lbfgs', max_iter=1000 )       
 ```
-si sono usati:
+si usano:
 - *activation='logistic'* come funzione di attivazione per gli strati nascosti. Questa è una funzione logistica sigmoidale che restituisce:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=f(x)&space;=&space;\frac{1}{1&plus;exp(-x)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f(x)&space;=&space;\frac{1}{1&plus;exp(-x)}" title="f(x) = \frac{1}{1+exp(-x)}" /></a>
    
 - *solver='lbfgs'* come risolutore per l'ottimizzazione dei pesi. Questo è un ottimizzatore facente parte dei metodi quasi-newtoniani ed è stato scelto in quanto per piccoli datasets, come il wdbc, converge più velocemente e ha migliori performance;
-- *max_iter=1000* come massimo numero di iterazioni per la convergenza;
+- *max_iter=1000* come numero massimo di iterazioni per la convergenza;
 - altri parametri di default, tra cui:
     - *hidden_layer_sizes=(100,)}* come dimensioni degli strati nascosti;
     - *alpha=0.0001* come parametro di penalizzazione L2;
@@ -240,25 +243,25 @@ si sono usati:
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 7. ABC
-Si usa l'implementazione standard dell'Ada Boost Classifier contenuto nella libreria `sklearn.ensemble`. Questo classificatore inizialmente fa il fit di un modello debole (leggermente migliori di quelli random) sul dataset e poi fitta copie aggiuntive dello stesso modello sullo stesso dataset ma aggiustando i pesi di istanze di training classificate non correttamente in modo che i classificatori seguenti si focalizzino di più su casi difficili. 
+Si usa l'implementazione standard dell'Ada Boost Classifier contenuto nella libreria `sklearn.ensemble`. Questo classificatore inizialmente fa il fit di un modello debole (leggermente migliore di uno random) sul dataset e poi di sue copie aggiuntive sullo stesso dataset ma in cui i pesi di istanze di training classificate non correttamente sono aggiustati, in modo da focalizzare l'attenzione su casi più difficili. 
 
-Iniziamente, questi pesi sono tutti settati a 1/N, così che il primo step alleni semplicemente un debole modello dei dati originali; tuttavia, per ogni iterazione successiva, sono modificati individualmente in modo che:
+Iniziamente, i pesi sono tutti settati a 1/N, così che il primo step alleni semplicemente un debole modello dei dati originali; tuttavia, per ogni iterazione successiva, sono modificati individualmente in modo che:
 - i pesi associati agli esempi di training che non sono predetti correttamente vengano aumentati;
 - i pesi associati agli esempi di training che sono predetti correttamente vengano diminuiti.
 
 Successivamente l'algoritmo di apprendimento viene riapplicato per ripesare i dati. In questo modo ogni volta che le iterazioni procedono, gli esempi difficili da predire ricevono un'influenza sempre crescente e ogni modello debole viene forzato a concentrarsi sugli esempi che mancano dai precedenti nella sequenza.
-Infine, le previsioni da ciascuno di loro vengono combinate attraverso un voto di maggioranza pesata per produrre la previsione finale. 
+Infine, le previsioni vengono combinate attraverso una somma pesata per produrre la previsione finale. 
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl=ensemble.AdaBoostClassifier()       
 ```
-si sono usati i parametri di default, tra cui:
-- *base_estimator=None=DecisionTreeClassifier(max_depth=1)}* come estimatore base da cui è costruito l'ensemble potenziato;
+si usano i parametri di default, tra cui:
+- *base_estimator=None=DecisionTreeClassifier(max_depth=1)}* come estimatore base da cui è costruito l'ensemble (di classificatori) potenziato;
 - *n_estimators=50* come numero di estimatori a cui viene concluso il potenziamento;
 - *learning_rate=1* come frequenza di apprendimento;
-- *algorithm='SAMME.R'* come algoritmo di potenziamento. Questo converge velocemente, raggiungendo un errore minore di testing con minori iterazioni di boosting.
+- *algorithm='SAMME.R'* come algoritmo di potenziamento. Questo converge velocemente, raggiungendo un minore errore di testing con minori iterazioni di boosting.
 
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
@@ -281,7 +284,7 @@ dove i parametri <a href="https://www.codecogs.com/eqnedit.php?latex=\sigma_y" t
 Tra i vantaggi di questo classificatore troviamo il fatto che:
 - richieda una piccola quantità di dati di training per stimare i parametri necessari;
 - possa essere estremamente veloce se confrontato con metodi più sofisticati;
-- il disaccoppiamento delle distribuzioni di features condizionali delle classi possa essere stimato indipendentemente come una distribuzione unidimensionale e questo aiuta ad ridurre i problemi che derivano dalla 'maledizione' della dimensionalità.
+- il disaccoppiamento delle distribuzioni di features condizionali delle classi possa essere stimato indipendentemente come una distribuzione unidimensionale e questo aiuta a ridurre i problemi che derivano dalla 'maledizione' della dimensionalità.
 
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
@@ -289,7 +292,7 @@ Nello specifico, per quanto riguarda il classificatore usato in questo progetto 
 #da Classification.py
 cl=naive_bayes.GaussianNB()    
 ```
-in cui si sono utilizzati i parametri di default, ovvero:
+si usano i parametri di default, tra cui:
 - *priors=(n_classes,)}* come probabilità a priori delle classi;
 - *var_smoothing=1e-9* come porzione della varianza più grande tra tutte le features. Questa viene aggiunta alle varianze per il calcolo della stabilità.
 
@@ -307,34 +310,34 @@ Nello specifico, *P(X|y)* è modellizzato come una distribuzione Gaussiana multi
 
 dove *d* è il numero di features.
 
-In poche parole, questo è un classificatore con un limite di decisione (superficie di separazione) quadratico che è generato fittando le densità condizionali delle classi e usando la regola di Bayes. Il modello fitta una densità Gaussiana ad ogni classe.
+In poche parole, questo è un classificatore con un confine di decisione quadratico che è generato fittando le densità condizionali  delle classi e usando la regola di Bayes.
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl=discriminant_analysis.QuadraticDiscriminantAnalysis()      
 ```
-sono stati usati come parametri quelli di default, tra cui:
+si usano i parametri di default, tra cui:
 - *priors=n_classes* come priori sulle classi;
 - *tol=1.0e-4* come soglia usata per la stima del rango.
 
 In seguito all'addestramento del classificatore tramite la funzione `fit`, viene utilizzata la funzione `predict` per fare previsioni sui dati di test e vengono calcolati rispettivamente report di classificazione, matrice di confusione e accuratezza.
 
 #### 10. SGD
-Si usa l'implementazione standard della Stochastic Gradient Descent contenuta nella libreria `sklearn.linear_model`. Questo è un classificatore lineare con apprendimento tramite il gradiente di discesa stocastica (SGD); nello specifico, questo implica che per ogni campione:
-- viene stimato il gradiente di perdita;
-- viene aggiornato il modello man mano con una frequenza di apprendimento decrescente.
+Si usa l'implementazione standard della Stochastic Gradient Descent contenuta nella libreria `sklearn.linear_model`. Questo è un classificatore lineare con un apprendimento che sfrutta il gradiente di discesa stocastica (SGD). Infatti, per ogni campione:
+- è stimato il gradiente di perdita;
+- è aggiornato il modello man mano con una frequenza di apprendimento decrescente.
 
-Il regolarizzatore è un termine di penalità che viene aggiunto alla funzione di perdita e che restringe i parametri del modello.
+Inoltre, è possibile aggiungere alla funzione di perdita un termine di penalità per restringere i parametri del modello.
 
 Nello specifico, per quanto riguarda il classificatore usato in questo progetto e mostrato di seguito:
 ```python
 #da Classification.py
 cl = linear_model.SGDClassifier(loss="perceptron", penalty="elasticnet", max_iter=600)   
 ```
-si sono usati:
-- *loss='perceptron'* come funzione di perdita, ovvero come perdita lineare usata dall'algoritmo del percettrone;
-- *penalty='elasticnet'* come penalità (termine di regolarizzazione). Questo è un termine che viene aggiunto alla funzione di perdita, restringe i parametri del modello e, in questo caso, è una combinazione di L2 (norma euclidea quadrata) e L1 (norma assoluta);
+si usano:
+- *loss='perceptron'* come funzione di perdita lineare usata dall'algoritmo del percettrone;
+- *penalty='elasticnet'* come termine di penalità. In questo caso, è una combinazione di L2 (norma euclidea quadrata) e L1 (norma assoluta);
 - *max_iter=600* come massimo numero di passi sui dati di training;
 - altri parametri di default, tra cui:
     - *tol=1e-3* come criterio di stop.
@@ -345,13 +348,12 @@ In seguito all'addestramento del classificatore tramite la funzione `fit`, viene
 Il classificatore implementato grazie `pytorch` è il seguente:
 1. NNC (*Neural Network Classifier*)
 
-
-Per quanto riguarda questo classificatore è stato necessario sfuttare il one hot encoding, un processo tramite cui è possibile convertire le labels in numeri binari. In questo caso, quindi, sono stati associati *[1,0]* e *[0,1]* alle due possibili uscite (rispettivamente *B* e *M*) e questo passaggio è risultato indispensabile in quanto `pytorch` è in grado di funzionare solo su dati numerici.
+Per quanto riguarda questo classificatore si è sfruttato il One Hot Encoding, un processo tramite cui è possibile convertire le labels in numeri binari. In questo caso, quindi, sono stati associati *[1,0]* e *[0,1]* alle due possibili uscite (rispettivamente *B* e *M*) e questo passaggio è risultato indispensabile poichè `pytorch` è in grado di funzionare solo su dati numerici.
 
 #### NNC 
-Per l'implementazione della NNC è stata utilizzata la libreria `pytorch` che sfrutta una sintassi basata su tensori e programmazione ad oggetti.
+Per l'implementazione della NNC si utilizza della libreria `pytorch` che sfrutta una sintassi basata su tensori e programmazione ad oggetti.
 
-Come struttura della rete neurale, si sono utilizzati: 
+La struttura della rete neurale è costituita da: 
 1. un livello lineare che va da e-s a 15 canali, dove s ed e sono rispettivamente la prima e l'ultima feature considerate;
 2. un livello di passaggio per la funzione ReLU, utile per scartare i valori negativi ottenuti finora;
 3. un livello lineare che va da 15 a 10 canali;
@@ -360,7 +362,7 @@ Come struttura della rete neurale, si sono utilizzati:
 
 Per l'addestramento della CNN si sottopone alla rete neurale l'intero dataset mescolato più volte, dove il numero di "mescolamenti" è detto `epoch`.
 
-Come funzione di errore si è scelta *SmoothL1Loss* perchè ritenuta adeguata per una classificazione 2-classi e perchè ritenuta migliore rispetto alle altre funzioni di errore candidate. Nello specifico, questa crea un criterio che usa un termine quadrato se l'errore assoluto element-wise cade al di sotto dell'1 e un termine L1 altrimenti. Inoltre, è meno sensibile ai valori anomali rispetto al MSELoss ed è conosciuta anche come Huber loss:
+Come funzione di errore si utilizza *SmoothL1Loss* perchè ritenuta adeguata per una classificazione 2-classi e perchè risultata migliore rispetto alle altre funzioni di errore candidate. Questa funzione si basa su un criterio che usa un termine quadrato se l'errore assoluto element-wise cade al di sotto dell'1 e un termine L1 altrimenti. Inoltre, è meno sensibile ai valori anomali rispetto al MSELoss ed è conosciuta anche come Huber loss:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=\text{loss}(x,&space;y)&space;=&space;\frac{1}{n}&space;\sum_{i}&space;z_{i}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\text{loss}(x,&space;y)&space;=&space;\frac{1}{n}&space;\sum_{i}&space;z_{i}" title="\text{loss}(x, y) = \frac{1}{n} \sum_{i} z_{i}" /></a>
 
@@ -368,10 +370,10 @@ dove *z_i* è data da:
 
 <a href="https://www.codecogs.com/eqnedit.php?latex=z_{i}&space;=&space;\begin{cases}&space;0.5&space;(x_i&space;-&space;y_i)^2,&space;&&space;\text{se&space;}&space;|x_i&space;-&space;y_i|&space;<&space;1&space;\\&space;|x_i&space;-&space;y_i|&space;-&space;0.5,&space;&&space;\text{altrimenti&space;}&space;\end{cases}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?z_{i}&space;=&space;\begin{cases}&space;0.5&space;(x_i&space;-&space;y_i)^2,&space;&&space;\text{se&space;}&space;|x_i&space;-&space;y_i|&space;<&space;1&space;\\&space;|x_i&space;-&space;y_i|&space;-&space;0.5,&space;&&space;\text{altrimenti&space;}&space;\end{cases}" title="z_{i} = \begin{cases} 0.5 (x_i - y_i)^2, & \text{se } |x_i - y_i| < 1 \\ |x_i - y_i| - 0.5, & \text{altrimenti } \end{cases}" /></a>
 
-Insieme a questa è stata usata come funzione di ottimizzazione `torch.optim.Adam`, una funzione adattiva dotata di gradient descent e suggerita dalla documentazione di `pytorch` per l'addestramento.
+Insieme a questa si usa come funzione di ottimizzazione `torch.optim.Adam`, una funzione adattiva dotata di gradient descent e suggerita dalla documentazione di `pytorch` per l'addestramento.
 Durante l'addestramento si calcola quindi la backpropagation dell'errore lungo tutta la rete e si esegue uno step di ottimizzazione la cui dimensione è definita dal `learning_rate`(=0.005, in questo caso) nella funzione `torch.optim.Adam`.
 
-Per quanto riguarda il testing e l'accuratezza delle previsioni fatte dalla rete neurale si sono usate le funzioni `np.argmax` contenute nella libreria `sklearn`.
+Per quanto riguarda il testing e l'accuratezza delle previsioni fatte dalla rete neurale si usano le funzioni `np.argmax` contenute nella libreria `sklearn`.
 
 Di seguito, si riporta lo script della rete neurale, comprendente addestramento e testing:
 ```python
