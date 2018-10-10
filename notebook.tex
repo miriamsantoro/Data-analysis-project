@@ -443,9 +443,7 @@ valori (nel nostro caso etichettati con "B"=0 e "M"=1). La funzione
 utilizzata in questo modello è chiamata logistica ed è una funzione del
 tipo:
 
-\begin{equation*}
-f(x)={\frac {L}{1+e^{-k(x-x_{0})}}}
-\end{equation*}
+\(\begin{equation*} f(x)={\frac {L}{1+e^{-k(x-x_{0})}}}\\ \end{equation*}\)
 
 dove: - e = numero di Eulero, - x0 = valore sull'asse delle x del punto
 a metà della funzione sigmoide, - L = massimo valore della curva - k =
@@ -503,18 +501,9 @@ progetto e mostrato di seguito:
 \end{Shaded}
 
 si sono usati: - come funzione kernel, una funzione lineare del tipo:
-
-\begin{equation*}
-    \langle x, x'\rangle
-    \end{equation*}
-
-\begin{itemize}
-\tightlist
-\item
-  altri parametri di default, tra cui:
-\item
-  \(C=1.0\) come parametro di penalità per il termine di errore
-\end{itemize}
+\(\begin{equation*}  \langle x, x'\rangle  \end{equation*}\) - altri
+parametri di default, tra cui: - \(C=1.0\) come parametro di penalità
+per il termine di errore
 
 In seguito all'addestramento del classificatore tramite la funzione
 \texttt{fit}, viene utilizzata la funzione \texttt{predict} per fare
@@ -560,9 +549,7 @@ fin quando tutte le foglie sono pure.
 Inoltre, l'equazione di diminuzione di impurità pesata (che governa lo
 split) è:
 
-\begin{equation*}
-\frac{N_t}{N} \cdot \left(\text{impurity} - \frac{N_{t_R}}{N_t} \cdot \text{right_impurity} - \frac{N_{t_L}}{N_t} \cdot \text{left_impurity} \right)
-\end{equation*}
+\(\begin{equation*} \frac{N_t}{N} \cdot \left(\text{impurity} - \frac{N_{t_R}}{N_t} \cdot \text{right_impurity} - \frac{N_{t_L}}{N_t} \cdot \text{left_impurity} \right) \\ \end{equation*}\)
 
 dove: - \(N\) è il numero totale di campioni - \(N_t\) è il numero di
 campioni al nodo corrente - \(N_{t_L}\) è il numero di campioni nella
@@ -678,9 +665,11 @@ si sono usati: - \(\text{activation='logistic'}\) come funzione di
 attivazione per gli strati nascosti. Questa è una funzione logistica
 sigmoidale che restituisce:
 
-\begin{equation*}
-    f(x) = \frac{1}{1+exp(-x)}
-    \end{equation*}
+\begin{verbatim}
+$\begin{equation*}
+f(x) = \frac{1}{1+exp(-x)}\\
+\end{equation*}$
+\end{verbatim}
 
 \begin{itemize}
 \tightlist
@@ -775,23 +764,16 @@ dato il valore della variabile di classe. Il teorema di Bayes stabilisce
 che, data la variabile di classe \(y\) e il vettore di feature
 dipendente \(x_1\) attraverso \(x_n\), si ha:
 
-\begin{equation*}
-P(y \mid x_1, \dots, x_n) = \frac{P(y) P(x_1, \dots x_n \mid y)} {P(x_1, \dots, x_n)}
-\end{equation*}
+\(\begin{equation*} P(y \mid x_1, \dots, x_n) = \frac{P(y) P(x_1, \dots x_n \mid y)} {P(x_1, \dots, x_n)} \\ \end{equation*}\)
 
 L'assunzione di indipendenza naive condizionale, invece, stabilisce che:
 
-\begin{equation*}
-P(x_i | y, x_1, \dots, x_{i-1}, x_{i+1}, \dots, x_n) = P(x_i | y)
-\end{equation*}
+\(\begin{equation*} P(x_i | y, x_1, \dots, x_{i-1}, x_{i+1}, \dots, x_n) = P(x_i | y) \\ \end{equation*}\)
 
 Questo classificatore implementa l'algoritmo Gaussian Naive Bayes per la
 classificazione in cui si assume che la likelihood delle features sia
 gaussiana:
-
-\begin{equation*}
-(x_i \mid y) = \frac{1}{\sqrt{2\pi\sigma^2_y}} \exp\left(-\frac{(x_i - \mu_y)^2}{2\sigma^2_y}\right)
-\end{equation*}
+\(\begin{equation*} P(x_i \mid y) = \frac{1}{\sqrt{2\pi\sigma^2_y}} \exp\left(-\frac{(x_i - \mu_y)^2}{2\sigma^2_y}\right) \\ \end{equation*}\)
 
 dove i parametri \(\sigma_y\) e \(\mu_y\) sono stimati usando il massimo
 della likelihood.
@@ -834,16 +816,12 @@ che modellano la distribuzione condizionale di classe dei dati
 \(P(X|y=k)\) per ogni classe \(k\). Le previsioni possono essere
 ottenute usando la regola di Bayes:
 
-\begin{equation*}
-P(y=k | X) = \frac{P(X | y=k) P(y=k)}{P(X)}
-\end{equation*}
+\(\begin{equation*} P(y=k | X) = \frac{P(X | y=k) P(y=k)}{P(X)} \\ \end{equation*}\)
 
 Nello specifico, \(P(X|y)\) è modellizzato come una distribuzione
 Gaussiana multivariata con densità:
 
-\begin{equation*}
-P(X | y=k) = \frac{1}{(2\pi)^{d/2} |\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2} (X-\mu_k)^t \Sigma_k^{-1} (X-\mu_k)\right)
-\end{equation*}
+\(\begin{equation*} P(X | y=k) = \frac{1}{(2\pi)^{d/2} |\Sigma_k|^{1/2}}\exp\left(-\frac{1}{2} (X-\mu_k)^t \Sigma_k^{-1} (X-\mu_k)\right) \\ \end{equation*}\)
 
 dove \(d\) è il numero di features.
 
@@ -937,19 +915,11 @@ l'errore assoluto element-wise cade al di sotto dell'1 e un termine L1
 altrimenti. Inoltre, è meno sensibile ai valori anomali rispetto al
 MSELoss ed è conosciuta anche come Huber loss:
 
-\begin{equation*}
-\text{loss}(x, y) = \frac{1}{n} \sum_{i} z_{i}
-\end{equation*}
+\(\begin{equation*} \text{loss}(x, y) = \frac{1}{n} \sum_{i} z_{i} \\ \end{equation*}\)
 
 dove \(z_i\) è data da:
 
-\begin{equation*}
-\begin{split}z_{i} =
-\begin{cases}
-0.5 (x_i - y_i)^2, & \text{se } |x_i - y_i| < 1 \\
-|x_i - y_i| - 0.5, & \text{altrimenti }
-\end{cases}\end{split}
-\end{equation*}
+\(\begin{equation*} \begin{split}z_{i} = \begin{cases} 0.5 (x_i - y_i)^2, & \text{se } |x_i - y_i| < 1 \\ |x_i - y_i| - 0.5, & \text{altrimenti } \end{cases}\end{split} \end{equation*}\)
 
 Insieme a questa è stata usata come funzione di ottimizzazione
 \texttt{torch.optim.Adam}, una funzione adattiva dotata di gradient
