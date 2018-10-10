@@ -473,10 +473,10 @@ def NNC(s,e):
 ```
 
 ## Plotting 
-Le seguenti funzioni sono implementate in `Plotting.py`.
+Le seguenti funzioni sono implementate in `Plotting.py` tramite la libreria `matplolib`.
 
 ### Plot
-La funzione plot è stata implementata tramite la libreria `matplolib`. In questo modo è possibile visualizzare in un plot bidimensionale la popolazione del dataset iniziale e dei vari splitting effettuati per ottenere training set e test set.
+La funzione `Plot(s,e)` è utile per visualizzare in un plot bidimensionale la popolazione del dataset iniziale e dei vari splitting effettuati per ottenere training set e test set.
 I dati con cui è stato riempito il plot bidimensionale sono solo legati all'id-paziente e al tipo di tumore, non alle features.
 E' stato possibile realizzare questi grafici tramite la funzione `scatter`. 
 I risultati sono mostrati nelle seguenti figure:
@@ -485,13 +485,14 @@ I risultati sono mostrati nelle seguenti figure:
 ![](img/Plot_2.png)
 
 ### Histo
-La funzione è stata implementata tramite la libreria `matplotlib` ed è stata creata per visualizzare graficamente, tramite un istogramma, i risultati riguardanti la correlazione tra le varie features e le labels del dataset in modo da decretare le 10 features migliori. 
-La correlazione, non avendo dati distribuiti normalmente, è stata studiata tramite il coefficiente di Spearman. Infatti, è stata ottenuta tramite la funzione `spearmanr` implementata dalla libreria `scipy.stats` e restituente valori di correlazione compresi tra -1 e 1, dove lo 0 indica la non-correlazione. Come è possibile notare dalla seguente figura, le 10 features classificate come migliori sono quelle corrispondenti alle colonne: 2,4,5,8,9,15,22,24,25,29 del file *wdbc.data.txt* (si ricorda che le prime due colonne sono quelle relative a id-paziente e tipologia del tumore).
+La funzione `Histo()` è stata creata per visualizzare graficamente, tramite un istogramma, i risultati relativi alla correlazione tra le features e le labels del wdbc dataset in modo da decretare le 10 features migliori. 
+La correlazione, non avendo dati distribuiti normalmente, è stata studiata tramite il coefficiente di Spearman. Infatti, è stata ottenuta tramite la funzione `spearmanr` implementata dalla libreria `scipy.stats` e restituente valori di correlazione compresi tra -1 e 1, dove lo 0 indica la non-correlazione. 
+Come è possibile notare dalla seguente figura, le 10 features classificate come migliori sono quelle corrispondenti alle colonne: 2,4,5,8,9,15,22,24,25,29 del file *wdbc.data.txt* (si ricorda che le prime due colonne sono quelle relative a id-paziente e tipologia del tumore).
 
 ![](img/Histo.png)
 
 ### SVC plotting 
-Tramite la funzione `SVCPlot(s,e)`, nel caso particolare in cui si abbiano due features di input, vengono plottati quattro diversi SVC e la loro rispettiva decision function. I classificatori usati sono i seguenti:
+Tramite la funzione `SVCPlot(s,e)`, nel caso particolare in cui si abbiano due features di input, vengono plottati quattro diversi SVC e la loro rispettiva funzione di decisione. I classificatori usati sono i seguenti:
 ```python
 #da Plotting.py
 C=1.0  #parametro di penalità per il termine di errore
@@ -506,7 +507,7 @@ dove:
 
     <a href="https://www.codecogs.com/eqnedit.php?latex=\exp(-\gamma&space;\|x-x'\|^2)" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\exp(-\gamma&space;\|x-x'\|^2)" title="\exp(-\gamma \|x-x'\|^2)" /></a>
     
-3. rbf_NuSVC è un classificatore simile a SVC ma accetta set di parametri leggermente diversi e ha una diversa formulazione matematica. Nello specifico sfrutta un parametro che controlla il numero di support vectors (limite inferiore) e gli errori di allenamento (limite superiore). Anche in questo caso si è utilizzato come kernel una funzione a base radiale (rbf);
+3. rbf_NuSVC è un classificatore simile a SVC ma che accetta set di parametri leggermente diversi e ha una diversa formulazione matematica. Nello specifico sfrutta un parametro che controlla il numero di support vectors (limite inferiore) e gli errori di allenamento (limite superiore). Anche in questo caso si è utilizzato come kernel una funzione a base radiale (rbf);
 4. lin_svc è un classificatore lineare support vector ed è simile al primo classificatore (svc avente un kernel lineare) ma è implementato tramite la libreria `liblinear`, anzichè `libsvm`. Questo permette di avere più flessibilità nella scelta dei termini di penalizzazione e delle funzioni di perdita. I parametri sono lasciati di default e tra questi è possibile notare:
     - *penalty=l2* come termine di penalizzazione;
     - *loss='hinge'* come funzione di perdita.
@@ -521,13 +522,13 @@ il risultato che si ottiene è il seguente:
 ![](img/SVC.png)
 
 ### DTC plotting 
-Tramite la funzione `DTCPlot(s:e)` è possibile ottenere in formato pdf il DTC generato, al variare dei diversi splitting di training e test e del numero di features prese in considerazione.
+Tramite la funzione `DTCPlot(s:e)` è possibile ottenere in formato pdf il DTC generato, al variare dei diversi splitting di training set e test set e del numero di features prese in considerazione.
 In figura è mostrato un esempio di Tree generato, prendendo in considerazione 30 features, un training set del 80% e un test set del 20%.
 
 ![](img/wdbc_tree_2.png)
 
 ### Plot3B
-Tramite la funzione `Plot3B()` è possibile ottenere un grafico 3-dim avente sui 3 assi le 3 features migliori, dedotte tramite l'istogramma (`Histo()`). Come è possibile notare dalla figura, sembra esserci un andamento lineare sia per i tumori benigni che per quelli maligni ma nel secondo caso, questo andamento presenta delle maggiori variazioni. 
+Tramite la funzione `Plot3B()` è possibile ottenere un grafico 3-dim avente sui 3 assi le 3 features migliori, dedotte dall'istogramma (`Histo()`). Come è possibile notare dalla figura, sembra esserci un andamento lineare sia per i tumori benigni che per quelli maligni. 
 Il risultato è mostrato di seguito:
 
 ![](img/3_best_features.png)
@@ -618,9 +619,9 @@ Una volta fatto girare il programma, i risultati ottenuti per un training set de
 |11. NNC|6/114|94.74%|
 
 Osservando le tabelle è possibile notare come i classificatori migliori risultino:
-1. ABC che compare tra le performance migliori in presenza di 9,16,30 e 10 best ma non in 1 feature;
-2. QDA che compare tra le performance migliori in presenza di 1,9,16 e 30 ma non in 10 best;
-3. NNC che compare tra le performance migliori in presenza di 9,16,10 best ma non in 1,30 features.
+1. ABC che compare tra le performance migliori in presenza di 9,16,30 e 10 best ma non di 1 feature;
+2. QDA che compare tra le performance migliori in presenza di 1,9,16 e 30 features ma non di 10 best;
+3. NNC che compare tra le performance migliori in presenza di 9,16,10 best ma non di 1,30 features.
 
 
 Bisogna specificare che il fatto che questi classificatori non compaiano tra le performance migliori in alcuni casi, non vuol dire che classifichino male ma che altri classificatori sono risultati migliori, a parità di condizioni. Infatti:
@@ -634,7 +635,7 @@ Inoltre, in generale si può notare come le performance dei classificatori migli
 
 Il fatto che i 3 classificatori migliori siano ABC, QDA e NNC è spiegabile con:
 1. ABC e NNC sono classificatori adattativi. Inoltre, in generale, i classificatori basati su reti neurali sono la soluzione più rapida e diretta per avere performance consistenti;
-2. QDA si basa su una linea di decisione quadratica e sul teorema di Bayes. I classificatori bayesiani sono caratterizzati dalla minima probabilità di errore (Bayes Error Rate), ovvero migliore che un classificatore possa fare. Il fatto che GNB non lavori bene come QDA potrebbe essere legato alla minore flessibilità del primo modello in cui si fa anche un'assunzione di non correlazione tra le variabili all'interno di una stessa classe.
+2. QDA si basa su una linea di decisione quadratica e sul teorema di Bayes. I classificatori bayesiani sono caratterizzati dalla minima probabilità di errore (Bayes Error Rate), ovvero dalla migliore che un classificatore possa fare. Il fatto che GNB non lavori bene come QDA potrebbe essere legato alla minore flessibilità del primo modello in cui si fa anche un'assunzione di non correlazione tra le variabili all'interno di una stessa classe.
 
 ### Extra
 In questa sezione, sono mostrati per completezza di contenuti, i DataFrame con i dati relativi alle accuratezze dei classificatori per i vari splitting tra training e test.
